@@ -13,6 +13,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 public class ContractAdmRestApplication {
 
 	public static void main(String[] args) {
+//		init
 		SpringApplication.run(ContractAdmRestApplication.class, args);
 	}
 
