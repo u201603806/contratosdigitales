@@ -1,16 +1,14 @@
 package com.upc.contract.adm.controller;
 
-import javax.servlet.http.HttpServletRequest;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
-import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-
+import com.upc.contract.core.entity.Usuario;
 import com.upc.contract.core.util.ResponseCore;
 
 
 public interface LoginController {
-	@RequestMapping(value = "/acceso", produces = { MediaType.APPLICATION_JSON_VALUE,
-			MediaType.APPLICATION_XML_VALUE }, method = RequestMethod.POST)
-	ResponseCore validarAcceso(HttpServletRequest request);
+	
+	@PostMapping("/acceso")
+	ResponseCore validarAcceso(@RequestBody Usuario usuario);
 }
