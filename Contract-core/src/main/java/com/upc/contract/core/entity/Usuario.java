@@ -1,5 +1,6 @@
 package com.upc.contract.core.entity;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -7,15 +8,22 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "TBL_CONTRACT_USUARIO")
+@Table(name = "TBL_USUARIO")
 public class Usuario  {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "NID_USUARIO")
 	private Long idUsuario;
+	@Column(name = "CCOD_USUARIO")
 	private String codUsuario;
+	@Column(name = "CNOMBRE")
 	private String nombre;
+	@Column(name = "CAPELLIDO")
 	private String apellido;
+	@Column(name = "CCLAVE")
 	private String clave;
+	@Column(name = "CPERFIL")
+	private String perfil;
 
 	public Long getIdUsuario() {
 		return idUsuario;
@@ -55,6 +63,14 @@ public class Usuario  {
 
 	public void setClave(String clave) {
 		this.clave = clave;
+	}
+
+	public String getPerfil() {
+		return perfil;
+	}
+
+	public void setPerfil(String perfil) {
+		this.perfil = perfil;
 	}
 
 }

@@ -10,13 +10,12 @@ import com.upc.contract.core.service.UsuarioService;
 @Service
 public class UsuarioServiceImpl implements UsuarioService {
 
-    @Autowired
-    private UsuarioRepository usuarioDao;
+	@Autowired
+	private UsuarioRepository usuarioRepository;
 
 	@Override
-	public Usuario obtenerUsuario(Long codigo) throws Exception {
-		return usuarioDao.findById(codigo).get();
+	public Usuario userValidate(String usuario, String clave) throws Exception {
+		return usuarioRepository.userValidate(usuario, clave);
 	}
 
-    
 }
