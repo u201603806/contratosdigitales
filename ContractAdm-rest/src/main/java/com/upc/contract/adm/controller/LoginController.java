@@ -1,12 +1,16 @@
 package com.upc.contract.adm.controller;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import javax.servlet.http.HttpServletRequest;
 
-import com.upc.contract.core.entity.Usuario;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+
+import com.upc.contract.core.util.ResponseCore;
 
 
 public interface LoginController {
-	@GetMapping("/entidad/{codigo}")
-    Usuario obtenerEntidad(@PathVariable(value = "codigo") Long codigo);
+	@RequestMapping(value = "/acceso", produces = { MediaType.APPLICATION_JSON_VALUE,
+			MediaType.APPLICATION_XML_VALUE }, method = RequestMethod.POST)
+	ResponseCore validarAcceso(HttpServletRequest request);
 }
