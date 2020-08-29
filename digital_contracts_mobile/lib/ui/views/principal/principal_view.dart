@@ -2,14 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:morpheus/widgets/morpheus_tab_view.dart';
+import 'package:stacked/stacked.dart';
+
+import 'package:digitalcontractsapp/data_models/user_login.dart';
 import 'package:digitalcontractsapp/res/pallete_color.dart';
 import 'package:digitalcontractsapp/ui/views/principal/principal_viewmodel.dart';
 import 'package:digitalcontractsapp/utils/network_image.dart';
-import 'package:stacked/stacked.dart';
 
 class PrincipalView extends StatefulWidget {
   final int currentIndex;
-  PrincipalView({this.currentIndex = 0});
+  final UserLogin userLogin;
+  PrincipalView({
+    Key key,
+    this.currentIndex = 0,
+    @required this.userLogin,
+  }) : super(key: key);
 
   @override
   _PrincipalViewState createState() => _PrincipalViewState();
@@ -44,7 +51,7 @@ class _PrincipalViewState extends State<PrincipalView> with SingleTickerProvider
     double distance = 0;
     return ViewModelBuilder<PrincipalViewModel>.reactive(
       viewModelBuilder: () => PrincipalViewModel(),
-      onModelReady: (model) => model.initialize(context, this.widget.currentIndex, openMenuDrawer),
+      onModelReady: (model) => model.initialize(context, widget.currentIndex, openMenuDrawer, widget.userLogin),
       builder: (_, model, child) => !model.isBusy
           ? Container(
               color: isCollapsed ? Colors.white : PalleteColor.backgroundMenuDrawerColor,
@@ -168,7 +175,7 @@ class _MenuDrawer extends ViewModelWidget<PrincipalViewModel> {
                     children: <Widget>[
                       Column(
                         mainAxisSize: MainAxisSize.min,
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: <Widget>[
                           const SizedBox(height: 50.0),
                           Row(
@@ -213,7 +220,7 @@ class _MenuDrawer extends ViewModelWidget<PrincipalViewModel> {
                           ),
                           const SizedBox(height: 10),
                           _OptionMenuDrawer(
-                            title: 'Citas',
+                            title: 'Agenda',
                             onTap: () => model.updateCurrentIndex(1, closeHiddenDrawer: true),
                             iconURL: 'assets/home/reserve_schedule.svg',
                           ),
@@ -221,7 +228,7 @@ class _MenuDrawer extends ViewModelWidget<PrincipalViewModel> {
                           _OptionMenuDrawer(
                             title: 'Notificaciones',
                             onTap: () => model.updateCurrentIndex(2, closeHiddenDrawer: true),
-                            iconURL: 'assets/home/offer_icon.svg',
+                            iconURL: 'assets/home/bell.svg',
                           ),
                           const SizedBox(height: 10),
                           _OptionMenuDrawer(
@@ -360,7 +367,7 @@ class _BottomNavigationBar extends ViewModelWidget<PrincipalViewModel> {
             ),
             title: Padding(
               padding: const EdgeInsets.only(bottom: 10.0),
-              child: Text('Citas',
+              child: Text('Agenda',
                   style: GoogleFonts.poppins(
                     fontSize: 11,
                     color: model.getColorBottomButton(index: 1),
@@ -368,7 +375,7 @@ class _BottomNavigationBar extends ViewModelWidget<PrincipalViewModel> {
             )),
         BottomNavigationBarItem(
           icon: SvgPicture.asset(
-            'assets/home/offer_icon.svg',
+            'assets/home/bell.svg',
             semanticsLabel: 'Password Logo',
             height: 25.0,
             fit: BoxFit.cover,

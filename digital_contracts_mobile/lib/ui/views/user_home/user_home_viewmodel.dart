@@ -1,9 +1,11 @@
+import 'package:digitalcontractsapp/app/router.gr.dart';
 import 'package:dio/dio.dart';
 import 'package:digitalcontractsapp/app/locator.dart';
 import 'package:digitalcontractsapp/data_models/business.dart';
 import 'package:digitalcontractsapp/data_models/rubro.dart';
 import 'package:digitalcontractsapp/services/api.dart';
 import 'package:digitalcontractsapp/services/app_model_service.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 
@@ -71,5 +73,9 @@ class UserHomeViewModel extends FutureViewModel {
   void closeSearch(String business) async {
     _isSearching = false;
     notifyListeners();
+  }
+
+  void goToContractView() {
+    _navigationService.navigateTo(Routes.contractPresentationViewRoute);
   }
 }

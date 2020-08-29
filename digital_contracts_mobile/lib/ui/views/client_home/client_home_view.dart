@@ -1,3 +1,4 @@
+import 'package:digitalcontractsapp/ui/widgets/buttons/action_button_custom.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:digitalcontractsapp/data_models/business.dart';
@@ -24,21 +25,29 @@ class ClientHomeView extends StatelessWidget {
                 ),
               ),
               backgroundColor: Color(0xffFCFCFC),
-              body: Center(child: Container(child: Text('No hay procesos de contratos en curso.'),)),
-              floatingActionButton: FloatingActionButton(
-                onPressed: () => model.goToRegisterBusinessForm(),
-                backgroundColor: PalleteColor.actionButtonColor,
-                child: Icon(
-                  Icons.add,
-                  color: Colors.white,
-                ),
-              ),
+              body: Container(
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      image: AssetImage("assets/home/background_home.jpg"),
+                      fit: MediaQuery.of(context).viewInsets.bottom > 0
+                          ? BoxFit.cover
+                          : MediaQuery.of(context).orientation == Orientation.portrait ? BoxFit.fitHeight : BoxFit.fitHeight,
+                    ),
+                  ),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                          padding: const EdgeInsets.all(20.0),
+                          child: ActionButtonCustom(action: () => model.goToRegisterBusinessForm(), label: 'Proceso de envio')),
+                      Container(padding: const EdgeInsets.all(20.0), child: ActionButtonCustom(action: () {}, label: 'Seguimiento')),
+                      Container(padding: const EdgeInsets.all(20.0), child: ActionButtonCustom(action: () {}, label: 'Consultas')),
+                    ],
+                  )),
             ));
   }
 }
-
-
-
 
 class _SectionHeader extends StatelessWidget {
   const _SectionHeader({

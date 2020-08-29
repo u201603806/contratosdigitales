@@ -74,7 +74,7 @@ class UserProfileView extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-                            _TitleText(text: 'Email:'),
+                            _TitleText(text: 'Usuario:'),
                             const SizedBox(height: 15),
                             _TitleText(text: 'Telefono:'),
                             const SizedBox(height: 15),
@@ -106,7 +106,7 @@ class UserProfileView extends StatelessWidget {
                       children: <Widget>[
                         ActionButtonCustom(label: 'Actualizar datos', action: () => model.showUpdateUserPopup()),
                         const SizedBox(height: 25.0),
-                        OutlineButtonCustom(label: 'Logout', labelColor: Color(0xff1357BD), action: () => model.logout()),
+                        OutlineButtonCustom(label: 'Cerrar Sesión', labelColor: Color(0xff1357BD), action: () => model.logout()),
                       ],
                     ),
                   ),

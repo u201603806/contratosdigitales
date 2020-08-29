@@ -1,3 +1,4 @@
+import 'package:digitalcontractsapp/res/pallete_color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -18,13 +19,13 @@ class UserHomeView extends StatelessWidget {
                 child: _SeachAppBar(),
               ),
               backgroundColor: Color(0xffFCFCFC),
-              body: _ContratsBody(),
+              body: _ContractsBody(),
             ));
   }
 }
 
-class _ContratsBody extends ViewModelWidget<UserHomeViewModel> {
-  const _ContratsBody({
+class _ContractsBody extends ViewModelWidget<UserHomeViewModel> {
+  const _ContractsBody({
     Key key,
   }) : super(key: key);
 
@@ -46,7 +47,7 @@ class _ContratsBody extends ViewModelWidget<UserHomeViewModel> {
                             _ContractsBuilder(contracts: model.contractsFound),
                           ],
                         )
-                      : Expanded(child: _ContractsFound()),
+                      : _ContractsFound(),
                 ),
               );
   }
@@ -63,7 +64,7 @@ class _ContractsFound extends ViewModelWidget<UserHomeViewModel> {
         ? Container(height: MediaQuery.of(context).size.height * 0.5, child: Center(child: CircularProgressIndicator()))
         : model.errorFetchingBusiness
             ? Center(child: Text('No se logró obtener información de contratos'))
-            : model.contracts.isNotEmpty ? _ContractsBuilder(contracts: model.contracts) : _SectionHeader(title: "0 Contratos");
+            : model.contracts.isEmpty ? _ContractsBuilder(contracts: model.contracts) : _SectionHeader(title: "0 Contratos");
   }
 }
 
@@ -79,85 +80,47 @@ class _ContractsBuilder extends ViewModelWidget<UserHomeViewModel> {
   Widget build(BuildContext context, UserHomeViewModel model) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.start,
       children: <Widget>[
-        _SectionHeader(title: "${this.contracts.length} Empresa${this.contracts.length > 1 ? 's' : ''}"),
-        Expanded(
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Center(
-              child: Container(
-                width: 400,
-                child: ListView.builder(
-                    physics: BouncingScrollPhysics(),
-                    shrinkWrap: true,
-                    itemCount: this.contracts.length,
-                    itemBuilder: (context, index) {
-                      return GestureDetector(
-                        onTap: () {
-                          FocusScope.of(context).unfocus();
-                        },
+        _SectionHeader(title: "${1} Contrato${this.contracts.length > 1 ? 's' : ''}"),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Center(
+            child: Container(
+              width: 400,
+              child: ListView.builder(
+                  physics: BouncingScrollPhysics(),
+                  shrinkWrap: true,
+                  itemCount: 1,
+                  itemBuilder: (context, index) {
+                    return GestureDetector(
+                      onTap: () => model.goToContractView(),
+                                          child: Card(
+                        elevation: 10.0,
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(20.0),
-                            child: Stack(
-                              alignment: Alignment.bottomCenter,
-                              children: <Widget>[
-                                Container(
-                                  height: 80.0,
-                                  decoration: BoxDecoration(
-                                    gradient: LinearGradient(begin: Alignment.bottomCenter, end: Alignment.topCenter, colors: [
-                                      Colors.black,
-                                      Colors.black,
-                                      Colors.black,
-                                      Colors.transparent,
-                                    ]),
-                                  ),
-                                ),
-                                Container(
-                                  padding: const EdgeInsets.all(15.0),
-                                  child: Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: <Widget>[
-                                      Expanded(
-                                        flex: 1,
-                                        child: Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: <Widget>[
-                                            Text(
-                                              this.contracts[index].name,
-                                              style: GoogleFonts.poppins(
-                                                  textStyle: TextStyle(
-                                                color: Colors.white,
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 20.0,
-                                              )),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      Expanded(
-                                        flex: 1,
-                                        child: Text(
-                                          this.contracts[index].scheduleGeneral,
-                                          style: GoogleFonts.poppins(
-                                              textStyle: TextStyle(
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 16.0,
-                                          )),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
+                          child: Row(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Icon(Icons.chrome_reader_mode, color: PalleteColor.actionButtonColor),
+                              ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text('Contrato Cosapi'),
+                                  Text('Fecha de validez: 28.08 - 10.09'),
+                                ],
+                              ),
+                            ],
                           ),
                         ),
-                      );
-                    }),
-              ),
+                        margin: const EdgeInsets.all(5.0),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(25.0), side: BorderSide(color: PalleteColor.informationActionColor, width: 1.0, style: BorderStyle.solid)),
+                      ),
+                    );
+                  }),
             ),
           ),
         )

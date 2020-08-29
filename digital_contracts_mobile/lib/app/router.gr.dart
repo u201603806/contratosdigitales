@@ -10,9 +10,11 @@ import 'package:auto_route/auto_route.dart';
 import 'package:digitalcontractsapp/ui/views/login/login_view.dart';
 import 'package:digitalcontractsapp/ui/views/user_home/user_home_view.dart';
 import 'package:digitalcontractsapp/ui/views/principal/principal_view.dart';
+import 'package:digitalcontractsapp/data_models/user_login.dart';
 import 'package:digitalcontractsapp/ui/views/enroll/enroll_view.dart';
 import 'package:digitalcontractsapp/ui/views/onboarding/onboarding_view.dart';
 import 'package:digitalcontractsapp/ui/views/contracts_register/contracts_register_view.dart';
+import 'package:digitalcontractsapp/ui/views/contract_presentation/contract_presentation_view.dart';
 
 abstract class Routes {
   static const loginViewRoute = '/';
@@ -21,6 +23,8 @@ abstract class Routes {
   static const enrollViewRoute = '/enroll-view-route';
   static const onBoardingViewRoute = '/on-boarding-view-route';
   static const contractsRegisterViewRoute = '/contracts-register-view-route';
+  static const contractPresentationViewRoute =
+      '/contract-presentation-view-route';
   static const all = {
     loginViewRoute,
     homeViewRoute,
@@ -28,6 +32,7 @@ abstract class Routes {
     enrollViewRoute,
     onBoardingViewRoute,
     contractsRegisterViewRoute,
+    contractPresentationViewRoute,
   };
 }
 
@@ -54,14 +59,15 @@ class Router extends RouterBase {
           settings: settings,
         );
       case Routes.principalViewRoute:
-        if (hasInvalidArgs<PrincipalViewArguments>(args)) {
+        if (hasInvalidArgs<PrincipalViewArguments>(args, isRequired: true)) {
           return misTypedArgsRoute<PrincipalViewArguments>(args);
         }
-        final typedArgs =
-            args as PrincipalViewArguments ?? PrincipalViewArguments();
+        final typedArgs = args as PrincipalViewArguments;
         return MaterialPageRoute<dynamic>(
-          builder: (context) =>
-              PrincipalView(currentIndex: typedArgs.currentIndex),
+          builder: (context) => PrincipalView(
+              key: typedArgs.key,
+              currentIndex: typedArgs.currentIndex,
+              userLogin: typedArgs.userLogin),
           settings: settings,
         );
       case Routes.enrollViewRoute:
@@ -79,6 +85,11 @@ class Router extends RouterBase {
           builder: (context) => ContractsRegisterView(),
           settings: settings,
         );
+      case Routes.contractPresentationViewRoute:
+        return MaterialPageRoute<dynamic>(
+          builder: (context) => ContractPresentationView(),
+          settings: settings,
+        );
       default:
         return unknownRoutePage(settings.name);
     }
@@ -91,6 +102,9 @@ class Router extends RouterBase {
 
 //PrincipalView arguments holder class
 class PrincipalViewArguments {
+  final Key key;
   final int currentIndex;
-  PrincipalViewArguments({this.currentIndex = 0});
+  final UserLogin userLogin;
+  PrincipalViewArguments(
+      {this.key, this.currentIndex = 0, @required this.userLogin});
 }

@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:digitalcontractsapp/data_models/user_login.dart';
 import 'package:digitalcontractsapp/services/storage_service.dart';
 import 'package:flutter/material.dart';
 import 'package:package_info/package_info.dart';
@@ -25,7 +26,7 @@ class LoginViewModel extends BaseViewModel {
   final FocusNode _focusPassword = FocusNode();
   UserType _userTypeSelected = UserType.User;
 
-  String _email = "";
+  String _username = "";
   String _password = "";
 
   // * Getters
@@ -56,13 +57,23 @@ class LoginViewModel extends BaseViewModel {
   void loginValidate(BuildContext _) async {
     FocusScope.of(_).unfocus();
     //if (_formKey.currentState.validate()) {
-      await _storageService.saveString('userType', _userTypeSelected.toString());
-      await _navigationService.pushNamedAndRemoveUntil(Routes.principalViewRoute);
-    //}
+    await _storageService.saveString('userType', _userTypeSelected.toString());
+    var response;
+    try {
+      response = await _api.loginUser({
+        'codUsuario': _username,
+        'clave': _password,
+      });
+    } catch (e) {}
+    if (response != null) {
+      UserLogin userLogin = UserLogin.fromJson(response['parametros']['usuario']);
+      await _navigationService.pushNamedAndRemoveUntil(Routes.principalViewRoute, arguments: PrincipalViewArguments(userLogin: userLogin, currentIndex: 0));
+    }
+    // }
   }
 
   void updateEmail(String value) {
-    _email = value;
+    _username = value;
   }
 
   void updatePassword(String value) {

@@ -34,6 +34,8 @@ dependencies:
   flutter_native_image: ^0.0.5+2
   flutter_exif_rotation: ^0.2.7
   version: ^1.2.0
+  table_calendar: ^2.2.3
+  native_pdf_view: ^3.8.0
 
   # state management
   stacked: ^1.6.0
@@ -65,6 +67,7 @@ flutter:
     - assets/account/
     - assets/home/
     - assets/onboarding/
+    - assets/contracts/
   fonts:
     - family: Poppins
       fonts:

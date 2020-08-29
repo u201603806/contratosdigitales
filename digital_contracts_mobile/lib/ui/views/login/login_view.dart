@@ -70,7 +70,7 @@ class _LoginForm extends HookViewModelWidget<LoginViewModel> {
             padding: const EdgeInsets.symmetric(horizontal: 20.0),
             child: TextFieldCustom(
               controller: emailController,
-              name: 'Email',
+              name: 'Usuario',
               nextFocus: model.focusPassword,
               keyboardType: TextInputType.emailAddress,
               onChanged: model.updateEmail,
@@ -80,7 +80,7 @@ class _LoginForm extends HookViewModelWidget<LoginViewModel> {
             padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
             child: TextFieldCustom(
               controller: passwordController,
-              name: 'Password',
+              name: 'Contraseña',
               focus: model.focusPassword,
               onChanged: model.updatePassword,
               isPassword: true,
@@ -137,11 +137,11 @@ class _UserTypeButtons extends ViewModelWidget<LoginViewModel> {
             child: model.userTypeSelected == UserType.User
                 ? ActionButtonCustom(
                     action: () {},
-                    label: 'Usuario',
+                    label: 'Colaborador',
                   )
                 : OutlineButtonCustom(
                     action: () => model.setUserType(UserType.User),
-                    label: 'Usuario',
+                    label: 'Colaborador',
                   ),
           ),
         ),
@@ -151,11 +151,11 @@ class _UserTypeButtons extends ViewModelWidget<LoginViewModel> {
             child: model.userTypeSelected == UserType.Business
                 ? ActionButtonCustom(
                     action: () {},
-                    label: 'Empresa',
+                    label: 'Admin',
                   )
                 : OutlineButtonCustom(
                     action: () => model.setUserType(UserType.Business),
-                    label: 'Empresa',
+                    label: 'Admin',
                   ),
           ),
         ),

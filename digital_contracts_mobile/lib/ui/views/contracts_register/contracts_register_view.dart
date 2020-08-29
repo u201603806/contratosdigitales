@@ -64,11 +64,34 @@ class _StepsFormRegister extends ViewModelWidget<ContractsRegisterViewModel> {
         return _ReviewSamples();
         break;
       case 2:
-        return _ReviewSamples();
+        return _ConfirmProcess();
         break;
       default:
         return _LoadContractForm();
     }
+  }
+}
+
+class _ConfirmProcess extends ViewModelWidget<ContractsRegisterViewModel> {
+  const _ConfirmProcess({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context, ContractsRegisterViewModel model) {
+    return Container(
+      padding: const EdgeInsets.all(10.0),
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(15),
+          color: Colors.white,
+          boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 2.0, spreadRadius: 1.0, offset: Offset(2.0, 2.0))]),
+      child: Column(
+        children: [
+          _TitleStep(title: 'Iniciar Proceso'),
+          Container(padding: const EdgeInsets.all(20.0), child: ActionButtonCustom(action: () => model.registerContracts(), label: 'Enviar contratos')),
+        ],
+      ),
+    );
   }
 }
 
@@ -153,7 +176,7 @@ class _ReviewSamples extends ViewModelWidget<ContractsRegisterViewModel> {
             ],
           ),
           const _SeparatorFields(),
-          Container(padding: const EdgeInsets.all(20.0), child: ActionButtonCustom(action: () => model.registerBusiness(), label: 'Guardar')),
+          Container(padding: const EdgeInsets.all(20.0), child: ActionButtonCustom(action: () => model.updateIndex(2), label: 'Siguiente')),
         ]),
       ),
     );

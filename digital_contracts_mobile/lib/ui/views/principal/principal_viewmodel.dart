@@ -1,6 +1,8 @@
 import 'package:digitalcontractsapp/app/router.gr.dart';
+import 'package:digitalcontractsapp/data_models/user_login.dart';
 import 'package:digitalcontractsapp/services/storage_service.dart';
 import 'package:digitalcontractsapp/ui/views/notifications/notifications_view.dart';
+import 'package:digitalcontractsapp/ui/views/user_appointment/user_appointment_view.dart';
 import 'package:flutter/material.dart';
 import 'package:digitalcontractsapp/app/locator.dart';
 import 'package:digitalcontractsapp/data_models/enums/user_type.dart';
@@ -23,6 +25,7 @@ class PrincipalViewModel extends BaseViewModel {
   final StorageService _storageService = locator<StorageService>();
   final AppModel _appModel = locator<AppModel>();
   final Token _tokenService = new Token();
+  UserLogin _userLogin;
 
   BuildContext _context;
   List<Widget> _tabWidgets;
@@ -35,32 +38,33 @@ class PrincipalViewModel extends BaseViewModel {
 
   // * Functions
 
-  void initialize(BuildContext context, int index, VoidCallback openDrawer) async {
+  void initialize(BuildContext context, int index, VoidCallback openDrawer, UserLogin userLogin) async {
     setBusy(true);
     _currentIndex = index;
     _context = context;
+    _userLogin = userLogin;
     _appModel.setOpenDrawer(openDrawer);
     await fillInitialData();
     setBusy(false);
   }
 
   Future<void> fillInitialData() async {
-    
-    var userTypeString = await _storageService.getString('userType'); 
+    var userTypeString = await _storageService.getString('userType');
     UserType userType = UserTypeHelper.getUserFromString(userTypeString);
+
     _appModel.updateUser(User(
       documentNumber: '12345678',
-      email: 'test@contracts.com',
+      email: _userLogin.codUsuario,
       googleID: '1234566',
       image: '',
       phone: '9888331231',
-      name: 'User Test',
+      name: '${_userLogin.nombre} ${_userLogin.apellido}',
     ));
     switch (userType) {
       case UserType.User:
         _tabWidgets = [
           UserHomeView(),
-          NotificationsView(),
+          UserAppointmentView(),
           NotificationsView(),
           UserProfileView(),
         ];
@@ -68,7 +72,7 @@ class PrincipalViewModel extends BaseViewModel {
       case UserType.Business:
         _tabWidgets = [
           ClientHomeView(),
-          NotificationsView(),
+          UserAppointmentView(),
           NotificationsView(),
           UserProfileView(),
         ];
@@ -76,7 +80,7 @@ class PrincipalViewModel extends BaseViewModel {
       default:
         _tabWidgets = [
           UserHomeView(),
-          NotificationsView(),
+          UserAppointmentView(),
           NotificationsView(),
           UserProfileView(),
         ];

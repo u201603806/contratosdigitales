@@ -36,7 +36,7 @@ class _NextButton extends ViewModelWidget<OnBoardingViewModel> {
           child: IconButton(
             icon: Icon(
               model.currentIndex == 2 ? Icons.check : Icons.arrow_forward,
-              color: Color(0xffFD7F80),
+              color: PalleteColor.actionButtonColor,
             ),
             onPressed: model.nextStep,
           ),

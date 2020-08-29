@@ -348,7 +348,7 @@ class ContractsRegisterViewModel extends FutureViewModel<void> {
     notifyListeners();
   }
 
-  void registerBusiness() async {
+  void registerContracts() async {
     if (_validationFinalStep()) {
       Alert(context: _context).loading('Registrando empresa');
       try {
@@ -358,7 +358,7 @@ class ContractsRegisterViewModel extends FutureViewModel<void> {
           Alert(
             context: _context,
             title: '',
-            label: 'Empresa registrada correctamente',
+            label: 'Contratos registrados correctamente',
           ).error();
         }
       } catch (e) {

@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route_annotations.dart';
+import 'package:digitalcontractsapp/ui/views/contract_presentation/contract_presentation_view.dart';
 import 'package:digitalcontractsapp/ui/views/contracts_register/contracts_register_view.dart';
 import 'package:digitalcontractsapp/ui/views/enroll/enroll_view.dart';
 import 'package:digitalcontractsapp/ui/views/login/login_view.dart';
@@ -15,4 +16,5 @@ class $Router {
   EnrollView enrollViewRoute;
   OnBoardingView onBoardingViewRoute;
   ContractsRegisterView contractsRegisterViewRoute;
+  ContractPresentationView contractPresentationViewRoute;
 }

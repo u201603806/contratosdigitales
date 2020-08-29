@@ -46,7 +46,7 @@ class NotificationsView extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 30.0),
               child: Text(
-                'No se encontraron ofertas actualmente',
+                'No se encontraron nuevas notificaciones', textAlign: TextAlign.center,
                 style: GoogleFonts.poppins(
                     textStyle: TextStyle(
                   color: Colors.black,
