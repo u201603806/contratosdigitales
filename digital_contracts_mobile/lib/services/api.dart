@@ -62,4 +62,8 @@ class Api {
 
   Future<Map> getLastAppVersionBuild() async => await _get('app-version');
 
+  Future<Map> loginUser(Map data) async => await _post('contractadm/seguridad/acceso', data);
+
+  Future<List> getContractTypes() async => await _get('contractadm/proceso/listartipos');
+
 }

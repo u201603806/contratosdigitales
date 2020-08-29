@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:digitalcontractsapp/data_models/contract_type.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:stacked/stacked.dart';
@@ -34,9 +35,7 @@ class ContractsRegisterViewModel extends FutureViewModel<void> {
   List<Country> _countries;
   List<Rubro> _rubros;
 
-  Country _selectedCountry;
   String _errorTextFormat;
-  Rubro _selectedRubro;
   String _errorTextDocumentType;
 
   String _helperGeneralSchedule;
@@ -44,6 +43,8 @@ class ContractsRegisterViewModel extends FutureViewModel<void> {
 
   bool _requireConfirmation = false;
   bool _requireAddedValue = false;
+
+  List<ContractType> _contracTypes = new List();
 
   List<Contract> _contracts = [
     Contract(documentNumber: '123454365', person: 'Jose Alberto Gonzalez', email: 'chuchau@canvia.com'),
@@ -85,6 +86,8 @@ class ContractsRegisterViewModel extends FutureViewModel<void> {
 
   List<Contract> get contracts => _contracts;
   List<Contract> get selectedContracts => _selectedContracts;
+
+  List<ContractType> get contractTypes => _contracTypes;
 
   List<Country> get countries => _countries;
   List<Rubro> get rubros => _rubros;
@@ -129,7 +132,10 @@ class ContractsRegisterViewModel extends FutureViewModel<void> {
   void onError(error) {}
 
   Future<void> _fetchRegisterFormData() async {
-    return;
+    var result = await _api.getContractTypes();
+    result.forEach((element) {
+      _contracTypes.add(ContractType.fromJson(element));
+    });
   }
 
   void updateIndex(int index) {
@@ -386,10 +392,7 @@ class ContractsRegisterViewModel extends FutureViewModel<void> {
     return servicesFilled;
   }
 
-
-
   String _getHourFormat(TimeOfDay time) => localizationsFormatter.formatTimeOfDay(time, alwaysUse24HourFormat: true);
-
 }
 
 class Contract {

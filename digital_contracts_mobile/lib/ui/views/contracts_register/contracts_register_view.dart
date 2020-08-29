@@ -375,7 +375,7 @@ class _LoadContractForm extends HookViewModelWidget<ContractsRegisterViewModel> 
               const _SeparatorFields(),
               _RegisterBusinessDropdown(
                 title: 'Formatos',
-                items: ['Alquiler', 'Otro'],
+                items: List<String>.generate(model.contractTypes.length, (index) => model.contractTypes[index].nombre),
                 selectedItem: model.formatSelected,
                 defaultHint: 'Seleccione un formato',
                 onChanged: model.updateFormat,
