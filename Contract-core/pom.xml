@@ -14,6 +14,8 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<jdk.version>1.8</jdk.version>
+		<poi.version>3.9</poi.version>
+		<poi.schemas.version>1.4</poi.schemas.version>
 	</properties>
 
 	<dependencies>
@@ -30,6 +32,19 @@
 			<artifactId>mysql-connector-java</artifactId>
 			<version>8.0.21</version>
 			<scope>runtime</scope>
+		</dependency>
+		
+		<!-- Excel -->
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi-ooxml</artifactId>
+			<version>${poi.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>ooxml-schemas</artifactId>
+			<version>${poi.schemas.version}</version>
 		</dependency>
 
 	</dependencies>
