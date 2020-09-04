@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.Table;
 
 @Entity
@@ -16,7 +17,8 @@ public class Envio {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "NID_ENVIO")
 	private Long idEnvio;
-	@Column(name = "BDATOS")
+	@Column(name = "BDATOS",columnDefinition = "BLOB" )
+	@Lob
 	private byte[] datos;
 	@Column(name = "DFECHA")
 	private Date fechaRegistro;
