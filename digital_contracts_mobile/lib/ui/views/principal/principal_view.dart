@@ -10,11 +10,9 @@ import 'package:digitalcontractsapp/ui/views/principal/principal_viewmodel.dart'
 import 'package:digitalcontractsapp/utils/network_image.dart';
 
 class PrincipalView extends StatefulWidget {
-  final int currentIndex;
   final UserLogin userLogin;
   PrincipalView({
     Key key,
-    this.currentIndex = 0,
     @required this.userLogin,
   }) : super(key: key);
 
@@ -51,7 +49,7 @@ class _PrincipalViewState extends State<PrincipalView> with SingleTickerProvider
     double distance = 0;
     return ViewModelBuilder<PrincipalViewModel>.reactive(
       viewModelBuilder: () => PrincipalViewModel(),
-      onModelReady: (model) => model.initialize(context, widget.currentIndex, openMenuDrawer, widget.userLogin),
+      onModelReady: (model) => model.initialize(context, openMenuDrawer, widget.userLogin),
       builder: (_, model, child) => !model.isBusy
           ? Container(
               color: isCollapsed ? Colors.white : PalleteColor.backgroundMenuDrawerColor,

@@ -64,10 +64,8 @@ class Router extends RouterBase {
         }
         final typedArgs = args as PrincipalViewArguments;
         return MaterialPageRoute<dynamic>(
-          builder: (context) => PrincipalView(
-              key: typedArgs.key,
-              currentIndex: typedArgs.currentIndex,
-              userLogin: typedArgs.userLogin),
+          builder: (context) =>
+              PrincipalView(key: typedArgs.key, userLogin: typedArgs.userLogin),
           settings: settings,
         );
       case Routes.enrollViewRoute:
@@ -103,8 +101,6 @@ class Router extends RouterBase {
 //PrincipalView arguments holder class
 class PrincipalViewArguments {
   final Key key;
-  final int currentIndex;
   final UserLogin userLogin;
-  PrincipalViewArguments(
-      {this.key, this.currentIndex = 0, @required this.userLogin});
+  PrincipalViewArguments({this.key, @required this.userLogin});
 }

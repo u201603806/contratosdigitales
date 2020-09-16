@@ -44,11 +44,10 @@ class EnrollViewModel extends BaseViewModel {
   }
 
   void registerAccount(BuildContext _) async {
-    FocusScope.of(_).unfocus();
-    //if (_formKey.currentState.validate()) {
-      _storageService.saveString('userType', _userTypeSelected.toString());
-      await _navigationService.pushNamedAndRemoveUntil(Routes.principalViewRoute);
-    //}
+    // FocusScope.of(_).unfocus();
+    // //if (_formKey.currentState.validate()) {
+    //   await _navigationService.pushNamedAndRemoveUntil(Routes.principalViewRoute);
+    // //}
   }
 
   void updateEmail(String value) {

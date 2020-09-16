@@ -1,7 +1,9 @@
 import 'dart:io';
 
+import 'package:auto_route/auto_route.dart';
 import 'package:digitalcontractsapp/data_models/user_login.dart';
 import 'package:digitalcontractsapp/services/storage_service.dart';
+import 'package:digitalcontractsapp/ui/widgets/alerts/alerts.dart';
 import 'package:flutter/material.dart';
 import 'package:package_info/package_info.dart';
 import 'package:digitalcontractsapp/app/locator.dart';
@@ -55,19 +57,24 @@ class LoginViewModel extends BaseViewModel {
   }
 
   void loginValidate(BuildContext _) async {
+    Alert(context: _context).loading('Cargando...');
     FocusScope.of(_).unfocus();
     //if (_formKey.currentState.validate()) {
-    await _storageService.saveString('userType', _userTypeSelected.toString());
-    var response;
     try {
-      response = await _api.loginUser({
+      var response = await _api.loginUser({
         'codUsuario': _username,
         'clave': _password,
       });
-    } catch (e) {}
-    if (response != null) {
-      UserLogin userLogin = UserLogin.fromJson(response['parametros']['usuario']);
-      await _navigationService.pushNamedAndRemoveUntil(Routes.principalViewRoute, arguments: PrincipalViewArguments(userLogin: userLogin, currentIndex: 0));
+      if (response != null && response['estadoRespuesta'] == 'OK') {
+        Navigator.of(_context).pop();
+        UserLogin userLogin = UserLogin.fromJson(response['parametros']['usuario']);
+        await _navigationService.pushNamedAndRemoveUntil(Routes.principalViewRoute, arguments: PrincipalViewArguments(userLogin: userLogin));
+      } else {
+        throw Exception('Error login');
+      }
+    } catch (e) {
+      Navigator.of(_context).pop();
+      Alert(context: _context, title: 'Error', label: 'Usuario o password inválido').error();
     }
     // }
   }

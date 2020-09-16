@@ -66,4 +66,13 @@ class Api {
 
   Future<List> getContractTypes() async => await _get('contractadm/proceso/listartipos');
 
+  Future<Map> uploadData(Map data) async => await _post('contractadm/proceso/cargarData', data);
+
+  Future<Map> getSample(String idShipping, String name) async => await _get('contractadm/proceso/listarMuestra/$idShipping/$name');
+
+  Future<Map> processShipment(Map data) async => await _post('contractadm/proceso/procesarEnvio', data);
+
+  Future<List> getShipments() async => await _get('contractadm/consulta/listarEnvios');
+  
+  Future<List> getDocumentsByShipment(String idShipping) async => await _get('contractadm/consulta/listarDocumentos/$idShipping');
 }

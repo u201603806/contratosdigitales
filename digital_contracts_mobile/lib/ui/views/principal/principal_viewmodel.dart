@@ -24,7 +24,6 @@ class PrincipalViewModel extends BaseViewModel {
   final NavigationService _navigationService = locator<NavigationService>();
   final StorageService _storageService = locator<StorageService>();
   final AppModel _appModel = locator<AppModel>();
-  final Token _tokenService = new Token();
   UserLogin _userLogin;
 
   BuildContext _context;
@@ -38,9 +37,8 @@ class PrincipalViewModel extends BaseViewModel {
 
   // * Functions
 
-  void initialize(BuildContext context, int index, VoidCallback openDrawer, UserLogin userLogin) async {
+  void initialize(BuildContext context, VoidCallback openDrawer, UserLogin userLogin) async {
     setBusy(true);
-    _currentIndex = index;
     _context = context;
     _userLogin = userLogin;
     _appModel.setOpenDrawer(openDrawer);
@@ -49,10 +47,9 @@ class PrincipalViewModel extends BaseViewModel {
   }
 
   Future<void> fillInitialData() async {
-    var userTypeString = await _storageService.getString('userType');
-    UserType userType = UserTypeHelper.getUserFromString(userTypeString);
-
     _appModel.updateUser(User(
+      idUser: '${_userLogin.idUsuario}',
+      codUser: _userLogin.codUsuario,
       documentNumber: '12345678',
       email: _userLogin.codUsuario,
       googleID: '1234566',
@@ -60,8 +57,8 @@ class PrincipalViewModel extends BaseViewModel {
       phone: '9888331231',
       name: '${_userLogin.nombre} ${_userLogin.apellido}',
     ));
-    switch (userType) {
-      case UserType.User:
+    switch (_userLogin.perfil) {
+      case 'Colaborador':
         _tabWidgets = [
           UserHomeView(),
           UserAppointmentView(),
@@ -69,7 +66,7 @@ class PrincipalViewModel extends BaseViewModel {
           UserProfileView(),
         ];
         break;
-      case UserType.Business:
+      case 'Administrador':
         _tabWidgets = [
           ClientHomeView(),
           UserAppointmentView(),
