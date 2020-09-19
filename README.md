@@ -24,3 +24,6 @@ Usuarios para poder realizar pruebas:
     - Colaborador
         Usuario: gdlc
         Password: 123456
+
+Archivos de prueba para flujo de contratos:
+	Assets/
