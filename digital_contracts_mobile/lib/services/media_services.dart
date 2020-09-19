@@ -5,16 +5,10 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter_exif_rotation/flutter_exif_rotation.dart';
 import 'package:flutter_native_image/flutter_native_image.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:injectable/injectable.dart';
 
 @lazySingleton
 class MediaService {
-  final picker = ImagePicker();
-
-  Future<PickedFile> getImage({bool fromGallery = true}) {
-    return picker.getImage(source: fromGallery ? ImageSource.gallery : ImageSource.camera);
-  }
 
   Future<String> getBase64FromFile(File pickedImageFile) async {
     return base64String(await pickedImageFile.readAsBytes());

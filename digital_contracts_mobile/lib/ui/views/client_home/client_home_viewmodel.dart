@@ -52,4 +52,8 @@ class ClientHomeViewModel extends FutureViewModel<List<Business>> {
   void goToRegisterBusinessForm() {
     _navigationService.navigateTo(Routes.contractsRegisterViewRoute);
   }
+
+  void goToConsultingContracts() {
+    _navigationService.navigateTo(Routes.consultingContractsViewRoute);
+  }
 }

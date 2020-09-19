@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 import 'package:overlay_support/overlay_support.dart';
 import 'package:digitalcontractsapp/app/locator.dart';
 import 'package:digitalcontractsapp/app/router.gr.dart';
-import 'package:digitalcontractsapp/services/api.dart';
 import 'package:digitalcontractsapp/utils/token.dart';
 import 'package:stacked_services/stacked_services.dart';
 

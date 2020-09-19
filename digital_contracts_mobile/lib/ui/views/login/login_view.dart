@@ -5,7 +5,6 @@ import 'package:digitalcontractsapp/data_models/enums/user_type.dart';
 import 'package:digitalcontractsapp/res/pallete_color.dart';
 import 'package:digitalcontractsapp/ui/views/login/login_viewmodel.dart';
 import 'package:digitalcontractsapp/ui/widgets/buttons/action_button_custom.dart';
-import 'package:digitalcontractsapp/ui/widgets/buttons/google_button.dart';
 import 'package:digitalcontractsapp/ui/widgets/buttons/outline_button_custom.dart';
 import 'package:digitalcontractsapp/ui/widgets/text_fields/text_field_custom.dart';
 import 'package:stacked/stacked.dart';

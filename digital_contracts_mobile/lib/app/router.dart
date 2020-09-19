@@ -1,4 +1,6 @@
 import 'package:auto_route/auto_route_annotations.dart';
+import 'package:digitalcontractsapp/ui/views/colaborators_contract/colaborators_contract_view.dart';
+import 'package:digitalcontractsapp/ui/views/consulting_contracts/consulting_contracts_view.dart';
 import 'package:digitalcontractsapp/ui/views/contract_presentation/contract_presentation_view.dart';
 import 'package:digitalcontractsapp/ui/views/contracts_register/contracts_register_view.dart';
 import 'package:digitalcontractsapp/ui/views/enroll/enroll_view.dart';
@@ -17,4 +19,6 @@ class $Router {
   OnBoardingView onBoardingViewRoute;
   ContractsRegisterView contractsRegisterViewRoute;
   ContractPresentationView contractPresentationViewRoute;
+  ConsultingContractsView consultingContractsViewRoute;
+  ColaboratorsContractView colaboratorsContractViewRoute;
 }

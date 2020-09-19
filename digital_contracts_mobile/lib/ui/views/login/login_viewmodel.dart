@@ -59,24 +59,24 @@ class LoginViewModel extends BaseViewModel {
   void loginValidate(BuildContext _) async {
     Alert(context: _context).loading('Cargando...');
     FocusScope.of(_).unfocus();
-    //if (_formKey.currentState.validate()) {
-    try {
-      var response = await _api.loginUser({
-        'codUsuario': _username,
-        'clave': _password,
-      });
-      if (response != null && response['estadoRespuesta'] == 'OK') {
+    if (_formKey.currentState.validate()) {
+      try {
+        var response = await _api.loginUser({
+          'codUsuario': _username.trim(),
+          'clave': _password.trim(),
+        });
+        if (response != null && response['estadoRespuesta'] == 'OK') {
+          Navigator.of(_context).pop();
+          UserLogin userLogin = UserLogin.fromJson(response['parametros']['usuario']);
+          await _navigationService.pushNamedAndRemoveUntil(Routes.principalViewRoute, arguments: PrincipalViewArguments(userLogin: userLogin));
+        } else {
+          throw Exception('Error login');
+        }
+      } catch (e) {
         Navigator.of(_context).pop();
-        UserLogin userLogin = UserLogin.fromJson(response['parametros']['usuario']);
-        await _navigationService.pushNamedAndRemoveUntil(Routes.principalViewRoute, arguments: PrincipalViewArguments(userLogin: userLogin));
-      } else {
-        throw Exception('Error login');
+        Alert(context: _context, title: 'Error', label: 'Usuario o password inválido').error();
       }
-    } catch (e) {
-      Navigator.of(_context).pop();
-      Alert(context: _context, title: 'Error', label: 'Usuario o password inválido').error();
     }
-    // }
   }
 
   void updateEmail(String value) {

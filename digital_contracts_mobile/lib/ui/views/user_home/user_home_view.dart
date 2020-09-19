@@ -108,7 +108,8 @@ class _ContractsBuilder extends ViewModelWidget<UserHomeViewModel> {
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text('Contrato Cosapi'),
+                                  Text('LAC', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),),
+                                  Text('Contrato de Tiempo Completo'),
                                   Text('Fecha de validez: 28.08 - 10.09'),
                                 ],
                               ),

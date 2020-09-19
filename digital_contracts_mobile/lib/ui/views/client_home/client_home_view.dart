@@ -1,7 +1,6 @@
 import 'package:digitalcontractsapp/ui/widgets/buttons/action_button_custom.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:digitalcontractsapp/data_models/business.dart';
 import 'package:digitalcontractsapp/res/pallete_color.dart';
 import 'package:stacked/stacked.dart';
 
@@ -41,8 +40,8 @@ class ClientHomeView extends StatelessWidget {
                       Container(
                           padding: const EdgeInsets.all(20.0),
                           child: ActionButtonCustom(action: () => model.goToRegisterBusinessForm(), label: 'Proceso de envio')),
-                      Container(padding: const EdgeInsets.all(20.0), child: ActionButtonCustom(action: () {}, label: 'Seguimiento')),
-                      Container(padding: const EdgeInsets.all(20.0), child: ActionButtonCustom(action: () {}, label: 'Consultas')),
+                      Container(padding: const EdgeInsets.all(20.0), child: ActionButtonCustom(action: () => model.goToConsultingContracts(), label: 'Seguimiento')),
+                      Container(padding: const EdgeInsets.all(20.0), child: ActionButtonCustom(action: () => model.goToConsultingContracts(), label: 'Consultas')),
                     ],
                   )),
             ));

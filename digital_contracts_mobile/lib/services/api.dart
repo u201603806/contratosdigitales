@@ -18,8 +18,6 @@ class Api {
 
   Api() {
     dio.options.baseUrl = Globals.apiEndpoint;
-    dio.options.connectTimeout = 5000;
-    dio.options.sendTimeout = 5000;
     dio.options.receiveTimeout = 20000;
     dio.interceptors.add(RetryInterceptor(
       dio: dio,

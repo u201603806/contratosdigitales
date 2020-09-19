@@ -1,8 +1,10 @@
+import 'dart:convert';
 import 'dart:io';
 
+import 'package:digitalcontractsapp/data_models/contract_colaborator_sample.dart';
 import 'package:digitalcontractsapp/data_models/contract_type.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 import 'package:time_range_picker/time_range_picker.dart';
@@ -46,11 +48,11 @@ class ContractsRegisterViewModel extends FutureViewModel<void> {
 
   List<ContractType> _contracTypes = new List();
 
-  List<Contract> _contracts = [
+  List<Contract> _contractss = [
     Contract(documentNumber: '123454365', person: 'Jose Alberto Gonzalez', email: 'chuchau@canvia.com'),
     Contract(documentNumber: '983534534', person: 'Rosa María Placios', email: 'rosa@canvia.com'),
   ];
-  List<Contract> _selectedContracts = [];
+  List<ContractColaboratorSample> _selectedContracts = [];
 
   String _documentTypeSelected;
   String _formatSelected;
@@ -59,10 +61,11 @@ class ContractsRegisterViewModel extends FutureViewModel<void> {
   int _quota;
   String _description = '';
 
-  File _pickedImageFile;
-  PickedFile _pickedFile;
+  File _pickedFileDocument;
   String _errorTextImage;
   String _errorTextPlace;
+
+  List<ContractColaboratorSample> _contractsUploaded = new List();
 
   List<TimeRange> _generalScheduleTimeRange = new List();
   List<TimeRange> _mondayTimeRange = new List();
@@ -74,6 +77,7 @@ class ContractsRegisterViewModel extends FutureViewModel<void> {
   List<TimeRange> _sundayTimeRange = new List();
 
   bool _hasErrorGeneralSchedule = false;
+  List<String> _base64FileDocument = new List();
 
   // * Getters
   GlobalKey<FormState> get formKey => _formKey;
@@ -83,9 +87,8 @@ class ContractsRegisterViewModel extends FutureViewModel<void> {
   List<bool> get selectedWeekDays => _selectedWeekDays;
   String get helperGeneralSchedule => _helperGeneralSchedule;
   Color get colorBorderStartHourText => _colorBorderEndHourText;
-
-  List<Contract> get contracts => _contracts;
-  List<Contract> get selectedContracts => _selectedContracts;
+  List<ContractColaboratorSample> get selectedContracts => _selectedContracts;
+  List<ContractColaboratorSample> get contractsUploaded => _contractsUploaded;
 
   List<ContractType> get contractTypes => _contracTypes;
 
@@ -101,8 +104,11 @@ class ContractsRegisterViewModel extends FutureViewModel<void> {
   int get quota => _quota;
   String get description => _description;
 
-  File get pickedImage => _pickedImageFile;
+  File get pickedFileDocument => _pickedFileDocument;
+  List<String> get base64FileDocument => _base64FileDocument;
   String get errorTextImage => _errorTextImage;
+
+  String _idEnvio = '';
 
   String get errorTextPlace => _errorTextPlace;
 
@@ -254,7 +260,7 @@ class ContractsRegisterViewModel extends FutureViewModel<void> {
     return false;
   }
 
-  void onSelectedRow(bool selected, Contract service) async {
+  void onSelectedRow(bool selected, ContractColaboratorSample service) async {
     if (selected) {
       _selectedContracts.add(service);
     } else {
@@ -265,10 +271,10 @@ class ContractsRegisterViewModel extends FutureViewModel<void> {
 
   void deleteSelected() async {
     if (_selectedContracts.isNotEmpty) {
-      List<Contract> temp = [];
+      List<ContractColaboratorSample> temp = [];
       temp.addAll(_selectedContracts);
-      for (Contract contract in temp) {
-        _contracts.remove(contract);
+      for (ContractColaboratorSample contract in temp) {
+        _contractsUploaded.remove(contract);
         _selectedContracts.remove(contract);
       }
     }
@@ -276,8 +282,8 @@ class ContractsRegisterViewModel extends FutureViewModel<void> {
   }
 
   void addContract() {
-    var service = new Contract();
-    _contracts.add(service);
+    var service = new ContractColaboratorSample();
+    _contractsUploaded.add(service);
     notifyListeners();
   }
 
@@ -293,20 +299,22 @@ class ContractsRegisterViewModel extends FutureViewModel<void> {
     notifyListeners();
   }
 
-  Future getFile() async {
-    _pickedFile = await _mediaService.getImage();
-
-    _pickedImageFile = await _mediaService.exIf(path: _pickedFile.path);
-    if (_pickedImageFile != null) _errorTextImage = null;
+  Future pickDocument() async {
+    _pickedFileDocument = await FilePicker.getFile(type: FileType.custom, allowedExtensions: ['xls', 'xlsx']);
+    if (_pickedFileDocument != null) {
+      _base64FileDocument.add(base64Encode(await _pickedFileDocument.readAsBytes()));
+    }
     notifyListeners();
   }
 
-  void completeStepOne() {
+  void completeStepOne() async {
     if (_validationStepOne()) {
-      _currentIndex = 1;
-      _generateTimeRangeByDaySelected();
+      try {
+        await uploadContracts();
+        _currentIndex = 1;
+        notifyListeners();
+      } catch (e) {}
     }
-    notifyListeners();
   }
 
   void _generateTimeRangeByDaySelected() {
@@ -334,7 +342,7 @@ class ContractsRegisterViewModel extends FutureViewModel<void> {
     } else {
       _errorTextDocumentType = null;
     }
-    if (_pickedImageFile == null) {
+    if (_pickedFileDocument == null) {
       validatedForm = false;
       _errorTextImage = 'Seleccione un archivo';
     } else {
@@ -348,33 +356,34 @@ class ContractsRegisterViewModel extends FutureViewModel<void> {
     notifyListeners();
   }
 
-  void registerContracts() async {
+  Future<void> uploadContracts() async {
     if (_validationFinalStep()) {
-      Alert(context: _context).loading('Registrando');
+      Alert(context: _context).loading('Subiendo contratos');
       try {
-        await Future.delayed(Duration(seconds: 3));
-        Navigator.of(_context, rootNavigator: true).pop();
-         _navigationService.back(result: 'Created');
-          Alert(
-            context: _context,
-            title: '',
-            label: 'Contratos registrados correctamente',
-          ).error();
-        // var response = await _api.uploadData({
-        //   'datos': await _mediaService.getBase64FromFile(_pickedImageFile),
-        //   'idTipo': _contracTypes.where((element) => element.nombre == _documentTypeSelected).toList().first.idTipo,
-        // });
-        // debugPrint(response.toString());
-        // if (response['estadoRespuesta'] == 'OK') {
-          
-        //   Navigator.of(_context, rootNavigator: true).pop();
-        //   _navigationService.back(result: 'Created');
-        //   Alert(
-        //     context: _context,
-        //     title: '',
-        //     label: 'Contratos registrados correctamente',
-        //   ).error();
-        // }
+        var idTipo = _contracTypes.firstWhere((element) => element.nombre == _formatSelected);
+        var response = await _api.uploadData({
+          'datos': _base64FileDocument.first,
+          'idTipo': idTipo.idTipo,
+        });
+        _idEnvio = '${response['parametros']['idEnvio']}';
+        debugPrint(response.toString());
+        if (response['estadoRespuesta'] == 'OK') {
+          var responseSampleContractsUploaded = await _api.getSample(_idEnvio, '-');
+          if (responseSampleContractsUploaded['estadoRespuesta'] == 'OK') {
+            var documentUploaded = responseSampleContractsUploaded['parametros']['lstDocumentos'];
+            for (var i = 0; i < documentUploaded.length; i++) {
+              _contractsUploaded.add(ContractColaboratorSample.fromJson(documentUploaded[i]));
+            }
+            Navigator.of(_context, rootNavigator: true).pop();
+            Alert(
+              context: _context,
+              title: '',
+              label: 'Contratos registrados correctamente',
+            ).error();
+          } else {
+            throw Exception('No se pudo obtener registros');
+          }
+        }
       } catch (e) {
         Navigator.of(_context, rootNavigator: true).pop();
         Alert(
@@ -382,6 +391,7 @@ class ContractsRegisterViewModel extends FutureViewModel<void> {
           title: 'Alerta',
           label: 'No se pudo completar el registro intente mas tarde.',
         ).error();
+        rethrow;
       }
     } else {
       Alert(
@@ -389,6 +399,31 @@ class ContractsRegisterViewModel extends FutureViewModel<void> {
         title: 'Alerta',
         label:
             'Debe crear al menos un servicio y llenar todos los campos de los servicios del formulario correctamente. No se permite costo o tiempo igual a 0',
+      ).error();
+    }
+  }
+
+  void processContracts() async {
+    try {
+      Alert(context: _context).loading('Procesando contratos...');
+      var response = await _api.processShipment({'idEnvio': _idEnvio});
+      if (response['estadoRespuesta'] == 'OK') {
+        _navigationService.back(result: 'Created');
+        Navigator.of(_context, rootNavigator: true).pop();
+        Alert(
+          context: _context,
+          title: '',
+          label: 'Contratos procesados correctamente',
+        ).error();
+      } else {
+        throw Exception('Error processing');
+      }
+    } catch (e) {
+      Navigator.of(_context, rootNavigator: true).pop();
+      Alert(
+        context: _context,
+        title: 'Alerta',
+        label: 'Contratos no se procesaron correctamente. Intente más tarde',
       ).error();
     }
   }

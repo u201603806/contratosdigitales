@@ -15,6 +15,8 @@ import 'package:digitalcontractsapp/ui/views/enroll/enroll_view.dart';
 import 'package:digitalcontractsapp/ui/views/onboarding/onboarding_view.dart';
 import 'package:digitalcontractsapp/ui/views/contracts_register/contracts_register_view.dart';
 import 'package:digitalcontractsapp/ui/views/contract_presentation/contract_presentation_view.dart';
+import 'package:digitalcontractsapp/ui/views/consulting_contracts/consulting_contracts_view.dart';
+import 'package:digitalcontractsapp/ui/views/colaborators_contract/colaborators_contract_view.dart';
 
 abstract class Routes {
   static const loginViewRoute = '/';
@@ -25,6 +27,10 @@ abstract class Routes {
   static const contractsRegisterViewRoute = '/contracts-register-view-route';
   static const contractPresentationViewRoute =
       '/contract-presentation-view-route';
+  static const consultingContractsViewRoute =
+      '/consulting-contracts-view-route';
+  static const colaboratorsContractViewRoute =
+      '/colaborators-contract-view-route';
   static const all = {
     loginViewRoute,
     homeViewRoute,
@@ -33,6 +39,8 @@ abstract class Routes {
     onBoardingViewRoute,
     contractsRegisterViewRoute,
     contractPresentationViewRoute,
+    consultingContractsViewRoute,
+    colaboratorsContractViewRoute,
   };
 }
 
@@ -88,6 +96,22 @@ class Router extends RouterBase {
           builder: (context) => ContractPresentationView(),
           settings: settings,
         );
+      case Routes.consultingContractsViewRoute:
+        return MaterialPageRoute<dynamic>(
+          builder: (context) => ConsultingContractsView(),
+          settings: settings,
+        );
+      case Routes.colaboratorsContractViewRoute:
+        if (hasInvalidArgs<ColaboratorsContractViewArguments>(args)) {
+          return misTypedArgsRoute<ColaboratorsContractViewArguments>(args);
+        }
+        final typedArgs = args as ColaboratorsContractViewArguments ??
+            ColaboratorsContractViewArguments();
+        return MaterialPageRoute<dynamic>(
+          builder: (context) => ColaboratorsContractView(
+              key: typedArgs.key, idShipment: typedArgs.idShipment),
+          settings: settings,
+        );
       default:
         return unknownRoutePage(settings.name);
     }
@@ -103,4 +127,11 @@ class PrincipalViewArguments {
   final Key key;
   final UserLogin userLogin;
   PrincipalViewArguments({this.key, @required this.userLogin});
+}
+
+//ColaboratorsContractView arguments holder class
+class ColaboratorsContractViewArguments {
+  final Key key;
+  final String idShipment;
+  ColaboratorsContractViewArguments({this.key, this.idShipment});
 }

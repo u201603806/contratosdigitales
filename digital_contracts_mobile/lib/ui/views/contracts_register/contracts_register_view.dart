@@ -88,7 +88,7 @@ class _ConfirmProcess extends ViewModelWidget<ContractsRegisterViewModel> {
       child: Column(
         children: [
           _TitleStep(title: 'Iniciar Proceso'),
-          Container(padding: const EdgeInsets.all(20.0), child: ActionButtonCustom(action: () => model.registerContracts(), label: 'Enviar contratos')),
+          Container(padding: const EdgeInsets.all(20.0), child: ActionButtonCustom(action: () => model.processContracts(), label: 'Enviar contratos')),
         ],
       ),
     );
@@ -112,19 +112,25 @@ class _ReviewSamples extends ViewModelWidget<ContractsRegisterViewModel> {
             child: DataTable(
               columns: const <DataColumn>[
                 DataColumn(
-                  label: Text('Numero de documento', style: TextStyle(fontWeight: FontWeight.bold)),
+                  label: Text('Nombre', style: TextStyle(fontWeight: FontWeight.bold)),
                 ),
                 DataColumn(
-                  label: Text('Persona', style: TextStyle(fontWeight: FontWeight.bold)),
+                  label: Text('Puesto', style: TextStyle(fontWeight: FontWeight.bold)),
                 ),
                 DataColumn(
-                  label: Text('Correo', style: TextStyle(fontWeight: FontWeight.bold)),
+                  label: Text('DNI', style: TextStyle(fontWeight: FontWeight.bold)),
+                ),
+                DataColumn(
+                  label: Text('Inicio', style: TextStyle(fontWeight: FontWeight.bold)),
+                ),
+                DataColumn(
+                  label: Text('Fin', style: TextStyle(fontWeight: FontWeight.bold)),
                 ),
                 DataColumn(
                   label: Text('Opciones', style: TextStyle(fontWeight: FontWeight.bold)),
                 ),
               ],
-              rows: model.contracts
+              rows: model.contractsUploaded
                   .map(
                     (contract) => DataRow(
                         selected: model.selectedContracts.contains(contract),
@@ -135,19 +141,31 @@ class _ReviewSamples extends ViewModelWidget<ContractsRegisterViewModel> {
                           DataCell(
                             Padding(
                               padding: const EdgeInsets.all(4.0),
-                              child: Text(contract.documentNumber),
+                              child: Text(contract.nombre),
                             ),
                           ),
                           DataCell(
                             Padding(
                               padding: const EdgeInsets.all(4.0),
-                              child: Text(contract.person),
+                              child: Text(contract.puesto),
                             ),
                           ),
                           DataCell(
                             Padding(
                               padding: const EdgeInsets.all(4.0),
-                              child: Text(contract.email),
+                              child: Text(contract.dni),
+                            ),
+                          ),
+                          DataCell(
+                            Padding(
+                              padding: const EdgeInsets.all(4.0),
+                              child: Text(contract.inicio),
+                            ),
+                          ),
+                          DataCell(
+                            Padding(
+                              padding: const EdgeInsets.all(4.0),
+                              child: Text(contract.fin),
                             ),
                           ),
                           DataCell(
@@ -439,17 +457,15 @@ class _FileField extends ViewModelWidget<ContractsRegisterViewModel> {
         Container(
             height: 200.0,
             alignment: Alignment.center,
-            child: model.pickedImage == null
+            child: model.pickedFileDocument == null
                 ? Text('Ningún archivo seleccionado')
-                : Image.file(
-                    model.pickedImage,
-                    fit: BoxFit.contain,
-                  )),
-        RaisedButton(
-          color: PalleteColor.actionButtonColor,
-          onPressed: () => model.getFile(),
-          child: Icon(Icons.file_upload, color: Colors.white),
-        ),
+                : Text('Archivo Seleccionado: ${model.pickedFileDocument.path.split('\/').last}')),
+        if (model.pickedFileDocument == null)
+          RaisedButton(
+            color: PalleteColor.actionButtonColor,
+            onPressed: () => model.pickDocument(),
+            child: Icon(Icons.note, color: Colors.white),
+          ),
         if (model.errorTextImage != null)
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 5.0),
