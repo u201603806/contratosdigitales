@@ -56,7 +56,7 @@ class TextFieldCustom extends StatelessWidget {
               child: TextFormField(
                 controller: this.controller,
                 focusNode: this.focus,
-                textCapitalization: TextCapitalization.words,
+                textCapitalization: TextCapitalization.none,
                 textInputAction: nextFocus != null ? TextInputAction.next : TextInputAction.done,
                 keyboardType: this.keyboardType,
                 obscureText: this.isPassword,
