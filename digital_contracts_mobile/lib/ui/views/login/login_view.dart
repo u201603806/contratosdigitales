@@ -40,7 +40,6 @@ class LoginView extends StatelessWidget {
                     _WelcomeLabel(),
                     _IntroductionText(),
                     const SizedBox(height: 20.0),
-                    _UserTypeButtons(),
                     SizedBox(height: MediaQuery.of(context).size.height * 0.03),
                     _LoginForm(),
                   ],
@@ -93,29 +92,6 @@ class _LoginForm extends HookViewModelWidget<LoginViewModel> {
               label: 'Iniciar Sesión',
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.all(15.0),
-            child: GoogleButton(action: () {}),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(bottom: 20.0),
-            child: Material(
-              type: MaterialType.transparency,
-              child: InkWell(
-                onTap: () => model.goToEnroll(context),
-                child: Text(
-                  'Registrarse Ahora',
-                  style: TextStyle(
-                    fontSize: 20.0,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                    decoration: TextDecoration.underline,
-                    decorationThickness: 2.0,
-                  ),
-                ),
-              ),
-            ),
-          )
         ],
       ),
     );

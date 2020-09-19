@@ -352,21 +352,29 @@ class ContractsRegisterViewModel extends FutureViewModel<void> {
     if (_validationFinalStep()) {
       Alert(context: _context).loading('Registrando');
       try {
-        var response = await _api.uploadData({
-          'datos': await _mediaService.getBase64FromFile(_pickedImageFile),
-          'idTipo': _contracTypes.where((element) => element.nombre == _documentTypeSelected).toList().first.idTipo,
-        });
-        debugPrint(response.toString());
-        if (response['estadoRespuesta'] == 'OK') {
-          
-          Navigator.of(_context, rootNavigator: true).pop();
-          _navigationService.back(result: 'Created');
+        await Future.delayed(Duration(seconds: 3));
+        Navigator.of(_context, rootNavigator: true).pop();
+         _navigationService.back(result: 'Created');
           Alert(
             context: _context,
             title: '',
             label: 'Contratos registrados correctamente',
           ).error();
-        }
+        // var response = await _api.uploadData({
+        //   'datos': await _mediaService.getBase64FromFile(_pickedImageFile),
+        //   'idTipo': _contracTypes.where((element) => element.nombre == _documentTypeSelected).toList().first.idTipo,
+        // });
+        // debugPrint(response.toString());
+        // if (response['estadoRespuesta'] == 'OK') {
+          
+        //   Navigator.of(_context, rootNavigator: true).pop();
+        //   _navigationService.back(result: 'Created');
+        //   Alert(
+        //     context: _context,
+        //     title: '',
+        //     label: 'Contratos registrados correctamente',
+        //   ).error();
+        // }
       } catch (e) {
         Navigator.of(_context, rootNavigator: true).pop();
         Alert(
